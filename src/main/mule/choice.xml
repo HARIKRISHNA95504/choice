@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="ff58d3aa-9e64-4882-8327-3d66f75e8c27" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="choiceFlow" doc:id="67117fad-beb0-45e8-997e-d223e08b78a3" >
+		<http:listener doc:name="Listener" doc:id="a73aa900-8dd4-456c-8d4e-6781e6d0eb6f" config-ref="HTTP_Listener_config" path="/choice"/>
+		<logger level="INFO" doc:name="Logger" doc:id="a86e5b84-7fbf-495e-976d-0447c99e2c1a" message="choice flow started"/>
+		<choice doc:name="Choice" doc:id="3cfa6c9d-9808-4966-9584-6a64fe7c7ca9">
+			<when expression='#[(payload.city=="Hyderabad")or(payload.city=="Bangalore")or(payload.city=="Chennai")]'>
+				<ee:transform doc:name="Transform Message" doc:id="8a19303e-cf46-4eec-9790-1f14dea9e6e0" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message":"please contact magneq Team",
+	"contact": 9877663322,
+	"email":"magneq@gmail.com",
+	"address":"Hyderabad/Bangalore/Chennai"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="Transform Message" doc:id="6439588a-3d57-4fd0-940d-a942639007f2" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message":"we don't have office"
+}
+]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="Logger" doc:id="9be703b2-a649-4a58-bdab-0b3885415a6d" message="choice flow ended"/>
+	</flow>
+</mule>
