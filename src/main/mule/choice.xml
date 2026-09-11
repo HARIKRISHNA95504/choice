@@ -22,7 +22,7 @@ output application/json
 	"message":"please contact magneq Team",
 	"contact": 9877663322,
 	"email":"magneq@gmail.com",
-	"address":"Hyderabad/Bangalore/Chennai"
+	"address":"Hyderabad/Bangalore/Chennai/Pune"
 }]]></ee:set-payload>
 					</ee:message>
 				</ee:transform>
@@ -34,7 +34,8 @@ output application/json
 output application/json
 ---
 {
-	"message":"we don't have office"
+	"message":"we don't have office",
+	"Toll-Free":"121-233-22-33"
 }
 ]]></ee:set-payload>
 					</ee:message>
